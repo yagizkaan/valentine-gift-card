@@ -45,6 +45,123 @@ const cardMusic = document.getElementById("cardMusic");
 const effectField = document.getElementById("effectField");
 const categoryTabs = document.getElementById("categoryTabs");
 
+// --- Emoji efektleri için global değişken ---
+let emojiEffectInterval = null;
+const burstEmojis = [
+  "💕",
+  "💖",
+  "💗",
+  "💘",
+  "💝",
+  "💞",
+  "💟",
+  "💌",
+  "💋",
+  "💎",
+  "✨",
+  "🌟",
+  "💫",
+  "⭐",
+  "🌹",
+  "🌺",
+  "🌻",
+  "🌸",
+  "🌷",
+  "🎉",
+  "🎊",
+  "🎈",
+  "🦄",
+  "🫶",
+  "🥰",
+  "😍",
+  "😻",
+  "😽",
+  "😚",
+  "🧸",
+  "🍫",
+  "🍬",
+  "🍭",
+  "🍓",
+  "🍰",
+  "🧁",
+  "☁️",
+  "🌈",
+  "🦋",
+  "🕊️",
+  "🎶",
+  "🎵",
+  "🎤",
+  "🎧",
+  "🎂",
+  "🍦",
+  "🍩",
+  "🍪",
+  "🍒",
+  "🍎",
+  "🍉",
+  "🍇",
+  "🍑",
+  "🍯",
+  "🥂",
+  "🍾",
+  "🥳",
+  "🤩",
+  "😇",
+  "😌",
+  "😎",
+  "😏",
+  "😜",
+  "😋",
+  "😛",
+  "😝",
+  "😄",
+  "😃",
+  "😀",
+  "😊",
+  "😉",
+  "😌",
+  "🤗",
+  "🤍",
+  "❤️",
+  "🩷",
+  "🩵",
+  "🧡",
+  "💛",
+  "💚",
+  "💙",
+  "💜",
+  "🤎",
+  "🖤",
+  "🤍",
+];
+
+function showCardEffects() {
+  // Eğer efekt zaten başlatıldıysa tekrar başlatma
+  if (emojiEffectInterval) return;
+  emojiEffectInterval = setInterval(() => {
+    const emoji = document.createElement("div");
+    emoji.className = "emoji-burst";
+    emoji.innerHTML =
+      burstEmojis[Math.floor(Math.random() * burstEmojis.length)];
+    // Rastgele pozisyon
+    emoji.style.left = Math.random() * 100 + "vw";
+    emoji.style.top = Math.random() * 100 + "vh";
+    emoji.style.fontSize = 18 + Math.random() * 38 + "px";
+    emoji.style.position = "fixed";
+    emoji.style.pointerEvents = "none";
+    emoji.style.zIndex = 1;
+    effectField.appendChild(emoji);
+    setTimeout(() => emoji.remove(), 4000);
+  }, 120); // Her 120ms'de bir yeni emoji
+}
+
+function stopCardEffects() {
+  if (emojiEffectInterval) {
+    clearInterval(emojiEffectInterval);
+    emojiEffectInterval = null;
+  }
+}
+
 function renderPresetMessages() {
   presetMessagesDiv.innerHTML = "";
   const presetMessages = presetMessagesByCategory[selectedCategory];
@@ -155,6 +272,7 @@ function setupMessageBox() {
     box.classList.add("open");
     setTimeout(() => {
       animateBackground();
+      showCardEffects(); // <-- Emoji efektini başlat
     }, 500);
   };
 }
