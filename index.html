@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Valentine's Virtual Card</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="main-title">Send a Virtual Valentine's Card 💌</h1>
+      <form id="cardForm">
+        <div class="input-group">
+          <label for="recipient">To:</label>
+          <input
+            type="text"
+            id="recipient"
+            name="recipient"
+            placeholder="Recipient's name"
+            maxlength="30"
+          />
+        </div>
+        <div class="input-group">
+          <label for="sender">From:</label>
+          <input
+            type="text"
+            id="sender"
+            name="sender"
+            placeholder="Your name"
+            maxlength="30"
+          />
+        </div>
+        <div class="input-group">
+          <label for="theme">Card Theme:</label>
+          <select id="theme" name="theme">
+            <option value="classic">Classic</option>
+            <option value="cute">Cute</option>
+            <option value="modern">Modern</option>
+            <option value="dark">Dark</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>Message Category:</label>
+          <div id="categoryTabs" class="category-tabs">
+            <button
+              type="button"
+              data-category="valentine"
+              class="tab-btn active"
+            >
+              Valentine's Day
+            </button>
+            <button type="button" data-category="apology" class="tab-btn">
+              Apology
+            </button>
+            <button type="button" data-category="friendship" class="tab-btn">
+              Friendship
+            </button>
+            <button type="button" data-category="birthday" class="tab-btn">
+              Birthday
+            </button>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Message:</label>
+          <div id="presetMessages" class="preset-messages"></div>
+          <textarea
+            id="customMessage"
+            name="customMessage"
+            placeholder="Or write your own message..."
+            maxlength="200"
+          ></textarea>
+        </div>
+        <div class="input-group">
+          <label for="date">Date:</label>
+          <input type="date" id="date" name="date" />
+        </div>
+        <button type="submit" class="btn send-btn">Preview Card</button>
+      </form>
+      <div id="cardPreview" class="card-preview hidden"></div>
+      <div class="share-group hidden" id="shareGroup">
+        <button class="btn" id="copyLinkBtn">Copy Card Link</button>
+        <button class="btn" id="shareBtn">Share</button>
+        <audio
+          id="cardMusic"
+          src="https://cdn.pixabay.com/audio/2022/10/16/audio_12b5fae5b2.mp3"
+        ></audio>
+      </div>
+    </div>
+    <div id="effectField"></div>
+    <script src="script.js"></script>
+    <footer class="footer">
+      <span class="footer-repo">valentine-gift</span> &bull;
+      <a href="https://github.com/yagizkaan" target="_blank" rel="noopener"
+        >github.com/yagizkaan</a
+      >
+    </footer>
+  </body>
+</html>
