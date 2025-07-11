@@ -45,7 +45,6 @@ const cardMusic = document.getElementById("cardMusic");
 const effectField = document.getElementById("effectField");
 const categoryTabs = document.getElementById("categoryTabs");
 
-// --- Render preset messages for selected category ---
 function renderPresetMessages() {
   presetMessagesDiv.innerHTML = "";
   const presetMessages = presetMessagesByCategory[selectedCategory];
@@ -64,7 +63,6 @@ function renderPresetMessages() {
 }
 renderPresetMessages();
 
-// --- Category tab switching ---
 categoryTabs.querySelectorAll(".tab-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
     categoryTabs
@@ -78,7 +76,6 @@ categoryTabs.querySelectorAll(".tab-btn").forEach((btn) => {
   });
 });
 
-// --- Handle custom message input ---
 customMessage.addEventListener("input", () => {
   if (customMessage.value.trim() !== "") {
     selectedPreset = null;
@@ -86,105 +83,11 @@ customMessage.addEventListener("input", () => {
   }
 });
 
-// --- Handle theme switching ---
 document.getElementById("theme").addEventListener("change", (e) => {
   currentTheme = e.target.value;
   updateCardPreview();
 });
 
-// --- More emoji variety for background ---
-const burstEmojis = [
-  "💕",
-  "💖",
-  "💗",
-  "💘",
-  "💝",
-  "💞",
-  "💟",
-  "💌",
-  "💋",
-  "💎",
-  "✨",
-  "🌟",
-  "💫",
-  "⭐",
-  "🌹",
-  "🌺",
-  "🌻",
-  "🌸",
-  "🌷",
-  "🎉",
-  "🎊",
-  "🎈",
-  "🦄",
-  "🫶",
-  "🥰",
-  "😍",
-  "😻",
-  "😽",
-  "😚",
-  "😻",
-  "😽",
-  "😻",
-  "🧸",
-  "🍫",
-  "🍬",
-  "🍭",
-  "🍓",
-  "🍰",
-  "🧁",
-  "☁️",
-  "🌈",
-  "🦋",
-  "🕊️",
-  "🎶",
-  "🎵",
-  "🎤",
-  "🎧",
-  "🎂",
-  "🍦",
-  "🍩",
-  "🍪",
-  "🍒",
-  "🍎",
-  "🍉",
-  "🍇",
-  "🍑",
-  "🍯",
-  "🥂",
-  "🍾",
-  "🥳",
-  "🤩",
-  "😇",
-  "😌",
-  "😎",
-  "😏",
-  "😜",
-  "😋",
-  "😛",
-  "😝",
-  "😄",
-  "😃",
-  "😀",
-  "😊",
-  "😉",
-  "😌",
-  "🤗",
-  "🤍",
-  "❤️",
-  "🩷",
-  "🩵",
-  "🧡",
-  "💛",
-  "💚",
-  "💙",
-  "💜",
-  "🤎",
-  "🖤",
-  "🤍",
-];
-
-// --- Helper to hide form/messages on card show ---
 function hideFormAndMessages() {
   document.getElementById("cardForm").classList.add("hide-on-card");
   document.getElementById("presetMessages").classList.add("hide-on-card");
@@ -194,7 +97,6 @@ function showFormAndMessages() {
   document.getElementById("presetMessages").classList.remove("hide-on-card");
 }
 
-// --- Animate card preview as letter opening ---
 function animateLetterOpen() {
   cardPreview.classList.add("letter-open");
   setTimeout(() => {
@@ -202,7 +104,6 @@ function animateLetterOpen() {
   }, 1200);
 }
 
-// --- Animate background gradient ---
 function animateBackground() {
   document.body.classList.add("bg-animated");
 }
@@ -210,7 +111,6 @@ function stopBackgroundAnimation() {
   document.body.classList.remove("bg-animated");
 }
 
-// --- Card preview logic ---
 function updateCardPreview() {
   const recipient = document.getElementById("recipient").value.trim();
   const sender = document.getElementById("sender").value.trim();
@@ -231,13 +131,13 @@ function updateCardPreview() {
   }
   cardPreview.className = `card-preview theme-${currentTheme}`;
   cardPreview.innerHTML = `
-    ${date ? `<div class=\"card-date\">${date}</div>` : ""}
-    ${recipient ? `<div class=\"card-to\">To: ${recipient}</div>` : ""}
-    <div class=\"message-box closed\">
-      <button class=\"open-btn\">Press to open</button>
-      <div class=\"card-message\">${message}</div>
+    ${date ? `<div class="card-date">${date}</div>` : ""}
+    ${recipient ? `<div class="card-to">To: ${recipient}</div>` : ""}
+    <div class="message-box closed">
+      <button class="open-btn">Press to open</button>
+      <div class="card-message">${message}</div>
     </div>
-    ${sender ? `<div class=\"card-from\">— ${sender}</div>` : ""}
+    ${sender ? `<div class="card-from">— ${sender}</div>` : ""}
   `;
   cardPreview.classList.remove("hidden");
   shareGroup.classList.remove("hidden");
@@ -254,60 +154,44 @@ function setupMessageBox() {
     box.classList.remove("closed");
     box.classList.add("open");
     setTimeout(() => {
-      showCardEffects();
       animateBackground();
     }, 500);
   };
 }
 
-// --- Form submit: show card, animate, hide form/messages, then effects ---
 cardForm.addEventListener("submit", (e) => {
   e.preventDefault();
   updateCardPreview();
   hideFormAndMessages();
   cardPreview.classList.add("letter-open");
-  playCardMusic();
   setTimeout(() => {
     cardPreview.classList.remove("letter-open");
-    // Message box is closed, wait for user to open
   }, 1200);
   setTimeout(() => {
     cardPreview.scrollIntoView({ behavior: "smooth", block: "center" });
   }, 200);
 });
 
-// --- Live update preview on input ---
 ["recipient", "sender", "date"].forEach((id) => {
   document.getElementById(id).addEventListener("input", updateCardPreview);
 });
 
-// --- Music ---
-function playCardMusic() {
-  cardMusic.currentTime = 0;
-  cardMusic.play();
+// --- Share/Copy functionality (hash tabanlı, backend yok) ---
+function generateCardURL() {
+  const data = {
+    recipient: document.getElementById("recipient").value.trim(),
+    sender: document.getElementById("sender").value.trim(),
+    date: document.getElementById("date").value,
+    theme: document.getElementById("theme").value,
+    message:
+      selectedPreset !== null
+        ? presetMessagesByCategory[selectedCategory][selectedPreset]
+        : document.getElementById("customMessage").value.trim(),
+  };
+  const params = encodeURIComponent(JSON.stringify(data));
+  return `${window.location.origin}${window.location.pathname}#card=${params}`;
 }
 
-// --- Effects ---
-function showCardEffects() {
-  // Fill background with even more emoji bursts
-  for (let i = 0; i < 64; i++) {
-    // doubled from 32 to 64
-    setTimeout(() => {
-      const emoji = document.createElement("div");
-      emoji.className = "emoji-burst";
-      emoji.innerHTML =
-        burstEmojis[Math.floor(Math.random() * burstEmojis.length)];
-      // Random position anywhere on screen
-      emoji.style.left = Math.random() * 100 + "vw";
-      emoji.style.top = Math.random() * 100 + "vh";
-      emoji.style.fontSize = 18 + Math.random() * 38 + "px";
-      effectField.appendChild(emoji);
-      setTimeout(() => emoji.remove(), 4000);
-    }, i * 35); // faster interval
-  }
-}
-
-// --- Share/Copy functionality ---
 copyLinkBtn.addEventListener("click", () => {
   const url = generateCardURL();
   navigator.clipboard.writeText(url).then(() => {
@@ -329,23 +213,6 @@ shareBtn.addEventListener("click", () => {
   }
 });
 
-function generateCardURL() {
-  // Encode card data in URL hash (for demo, not secure)
-  const data = {
-    recipient: document.getElementById("recipient").value.trim(),
-    sender: document.getElementById("sender").value.trim(),
-    date: document.getElementById("date").value,
-    theme: currentTheme,
-    message:
-      selectedPreset !== null
-        ? presetMessagesByCategory[selectedCategory][selectedPreset]
-        : customMessage.value.trim(),
-  };
-  const params = encodeURIComponent(JSON.stringify(data));
-  return `${window.location.origin}${window.location.pathname}#card=${params}`;
-}
-
-// --- If URL has card data, show it directly as letter, then auto-open box ---
 window.addEventListener("DOMContentLoaded", () => {
   const hash = window.location.hash;
   if (hash.startsWith("#card=")) {
@@ -353,23 +220,22 @@ window.addEventListener("DOMContentLoaded", () => {
       const data = JSON.parse(decodeURIComponent(hash.slice(6)));
       cardPreview.className = `card-preview theme-${data.theme || "classic"}`;
       cardPreview.innerHTML = `
-        ${data.date ? `<div class=\"card-date\">${data.date}</div>` : ""}
+        ${data.date ? `<div class="card-date">${data.date}</div>` : ""}
         ${
           data.recipient
-            ? `<div class=\"card-to\">To: ${data.recipient}</div>`
+            ? `<div class="card-to">To: ${data.recipient}</div>`
             : ""
         }
-        <div class=\"message-box closed\">
-          <button class=\"open-btn\">Press to open</button>
-          <div class=\"card-message\">${data.message}</div>
+        <div class="message-box closed">
+          <button class="open-btn">Press to open</button>
+          <div class="card-message">${data.message}</div>
         </div>
-        ${data.sender ? `<div class=\"card-from\">— ${data.sender}</div>` : ""}
+        ${data.sender ? `<div class="card-from">— ${data.sender}</div>` : ""}
       `;
       cardPreview.classList.remove("hidden");
       shareGroup.classList.remove("hidden");
       hideFormAndMessages();
       cardPreview.classList.add("letter-open");
-      playCardMusic();
       setTimeout(() => {
         cardPreview.classList.remove("letter-open");
         // Auto-open the message box after a short delay
@@ -384,8 +250,10 @@ window.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         cardPreview.scrollIntoView({ behavior: "smooth", block: "center" });
       }, 200);
+      setupMessageBox();
     } catch (e) {
-      // ignore
+      cardPreview.innerHTML =
+        "<div class='error'>Card not found or invalid.</div>";
     }
   }
 });
